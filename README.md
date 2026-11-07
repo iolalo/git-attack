@@ -11,13 +11,13 @@ No usa Git de verdad ni backend: todo corre sobre un repositorio simulado en el 
 
 ## Capturas
 
-| Escenarios | Un pedido | Consola libre |
-| --- | --- | --- |
-| ![Mapa de escenarios](docs/screenshots/escenarios.png) | ![Sesión de juego](docs/screenshots/sesion.png) | ![Consola libre](docs/screenshots/consola-libre.png) |
+| Piso 1 | Un pedido de Git | Piso 3 | Un caso real |
+| --- | --- | --- | --- |
+| ![Mapa de escenarios](docs/screenshots/escenarios.png) | ![Sesión de Git](docs/screenshots/sesion.png) | ![Piso 3](docs/screenshots/piso3.png) | ![Caso real](docs/screenshots/sesion-piso3.png) |
 
 ## Cómo se juega
 
-- **Selección de escenario**: siete escenarios (piso 1, Git en tu compu). Cada uno se abre al ganarle al jefe del anterior.
+- **Selección de escenario**: siete escenarios en el piso 1 (Git en tu compu), cuatro en el 2 (GitHub) y cuatro casos reales en el 3. Cada uno se abre al ganarle al jefe del anterior.
 - **Tres niveles por escenario**: de *Pasante* elegís entre opciones, de *Junior* escribís el comando con una pista y de
   *Senior* lo escribís sin ayuda (y aparecen pedidos de varios pasos).
 - **El monitor** muestra la carpeta, el staging y el historial después de cada comando. Escribiendo en la consola se
@@ -56,6 +56,20 @@ Además:
 - **Machete** (`/machete`): los comandos de cada jefe vencido.
 - **Consola libre** (`/sandbox`): un repositorio de prueba para tirar comandos sin puntaje.
 
+**Piso 3 · Casos reales** (se abre al ganarle a Review Man). Ya no son comandos: cada pedido cuenta un síntoma con su
+evidencia y hay que encontrar la causa y el arreglo. Son problemas típicos del trabajo con BI, orígenes de datos, la nube y
+APIs, escritos de forma genérica (ningún nombre, tabla ni cifra sale de un proyecto real).
+
+| Jefe | Escenario | Tema |
+| --- | --- | --- |
+| Filter Man | Medidas y contexto | Totales que no coinciden, `LOOKUPVALUE` con duplicados, memoria, `DIVIDE` |
+| Relation Man | Relaciones del modelo | Rutas ambiguas, bidireccional parcial, filtros que no llegan, `USERELATIONSHIP` |
+| Source Man | Orígenes de datos | Formatos de fecha, Formula Firewall, query folding, particiones |
+| Quota Man | Nube y APIs | Cuotas de BigQuery, costos de consulta, errores 401/404/5xx, bots |
+
+Los tres niveles son siempre de elegir una opción: de *Pasante* hay que encontrar la **causa raíz**, de *Junior* el
+**arreglo** y de *Senior* el **cambio exacto** (código, con opciones casi iguales). Los casos viven en `src/lib/cases.ts`.
+
 ## Desarrollo
 
 ```bash
@@ -70,6 +84,7 @@ npm run build
 
 - `src/lib/git/sim.ts` — el simulador de Git: repositorio en memoria y comandos.
 - `src/lib/git/graph.ts` — acomoda el historial en columnas para dibujarlo.
+- `src/lib/cases.ts` — los casos reales del piso 3 (síntoma, causa, arreglo y cambio exacto).
 - `src/lib/challenges.ts` — los desafíos. Cada uno es una situación, un pedido y una meta que se comprueba sobre el
   repositorio simulado, así que vale cualquier comando que deje las cosas como se pidió.
 - `src/lib/rooms.ts` — los sectores y sus jefes.

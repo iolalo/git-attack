@@ -857,7 +857,7 @@ function SummaryView({
                 {TOPICS[boss.room.topic].commands}
               </p>
               <p className="text-[8px] mt-2">
-                {nextRoom ? `Ya podes entrar a ${plain(nextRoom.name)}` : "¡Recorriste los dos pisos!"}
+                {nextRoom ? `Ya podes entrar a ${plain(nextRoom.name)}` : "¡Recorriste los tres pisos!"}
               </p>
             </div>
           )}

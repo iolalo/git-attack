@@ -1,27 +1,32 @@
 "use client";
 
 import PixelSprite from "@/components/PixelSprite";
-import { FLOOR_1_ROOMS, ROOMS, RoomMeta } from "@/lib/rooms";
+import { FLOOR_1_ROOMS, FLOOR_2_ROOMS, ROOMS, RoomMeta } from "@/lib/rooms";
 import { PersonLook, personPalette, personRows } from "@/lib/sprites";
 import { useHeroLook } from "@/lib/useProgress";
 import { MAX_LEVEL } from "@/lib/types";
 
 // La pantalla de selección de escenario: una grilla con el retrato y el
-// nombre de cada jefe. En el centro estás vos. Hay dos pisos: el 1 (Git en
-// tu compu) y el 2 (GitHub); "up" y "down" son las casillas del ascensor.
+// nombre de cada jefe. En el centro estás vos. Hay tres pisos: el 1 (Git en
+// tu compu), el 2 (GitHub) y el 3 (casos reales); "up" y "down" son las casillas del ascensor.
 // Los números son índices de ROOMS.
 export type StageCell = number | "hero" | "up" | "down";
-export type Floor = 1 | 2;
+export type Floor = 1 | 2 | 3;
 
 export const STAGE_COLUMNS = 3;
 
 export const FLOOR_CELLS: Record<Floor, StageCell[]> = {
   1: [0, 1, 2, 3, "hero", 4, 5, 6, "up"],
-  2: [7, 8, 9, "down", "hero", 10],
+  2: [7, 8, 9, "down", "hero", 10, "up"],
+  3: [11, 12, 13, "down", "hero", 14],
 };
 
-/** El piso 2 se abre con el primer escenario de GitHub. */
+/** Cada piso se abre con su primer escenario. */
 export const FIRST_FLOOR_2_ROOM = FLOOR_1_ROOMS;
+export const FIRST_FLOOR_3_ROOM = FLOOR_1_ROOMS + FLOOR_2_ROOMS;
+
+/** El escenario que abre el piso al que lleva el ascensor de subida. */
+export const firstRoomAbove = (floor: Floor) => (floor === 1 ? FIRST_FLOOR_2_ROOM : FIRST_FLOOR_3_ROOM);
 
 export function cellOfRoom(floor: Floor, roomIndex: number): number {
   return Math.max(0, FLOOR_CELLS[floor].indexOf(roomIndex));
@@ -67,7 +72,7 @@ export default function StageSelect({ floor, cursor, onMove, onConfirm, levels, 
             );
           }
           if (cell === "up" || cell === "down") {
-            const closed = cell === "up" && isLocked(FIRST_FLOOR_2_ROOM);
+            const closed = cell === "up" && isLocked(firstRoomAbove(floor));
             return (
               <button
                 key={cell}
@@ -75,12 +80,12 @@ export default function StageSelect({ floor, cursor, onMove, onConfirm, levels, 
                 data-active={active}
                 data-locked={closed}
                 onClick={press}
-                aria-label={cell === "up" ? "Subir al piso 2: GitHub" : "Bajar al piso 1"}
+                aria-label={cell === "up" ? `Subir al piso ${floor + 1}` : `Bajar al piso ${floor - 1}`}
               >
                 <div className="stage-frame">
                   <span className="stage-mark">{closed ? "?" : cell === "up" ? "▲" : "▼"}</span>
                 </div>
-                <span>{cell === "up" ? "Piso 2" : "Piso 1"}</span>
+                <span>{cell === "up" ? `Piso ${floor + 1}` : `Piso ${floor - 1}`}</span>
                 <div className="stage-pips" />
               </button>
             );

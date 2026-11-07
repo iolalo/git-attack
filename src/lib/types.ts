@@ -9,7 +9,11 @@ export type TopicKey =
   | "remoto"
   | "push"
   | "pull"
-  | "pr";
+  | "pr"
+  | "medidas"
+  | "relaciones"
+  | "fuentes"
+  | "nube";
 
 export const TOPIC_ORDER: TopicKey[] = [
   "inicio",
@@ -23,6 +27,10 @@ export const TOPIC_ORDER: TopicKey[] = [
   "push",
   "pull",
   "pr",
+  "medidas",
+  "relaciones",
+  "fuentes",
+  "nube",
 ];
 
 export interface TopicMeta {
@@ -45,6 +53,10 @@ export const TOPICS: Record<TopicKey, TopicMeta> = {
   push: { key: "push", label: "Subir cambios", commands: "push", emoji: "⬆️" },
   pull: { key: "pull", label: "Bajar cambios", commands: "fetch · pull", emoji: "⬇️" },
   pr: { key: "pr", label: "Pull requests", commands: "gh pr · Fabric", emoji: "🔍" },
+  medidas: { key: "medidas", label: "Medidas y contexto", commands: "DAX · totales · filtros", emoji: "🧮" },
+  relaciones: { key: "relaciones", label: "Relaciones", commands: "rutas · cardinalidad · filtros", emoji: "🔗" },
+  fuentes: { key: "fuentes", label: "Orígenes de datos", commands: "Power Query · refresh", emoji: "🔌" },
+  nube: { key: "nube", label: "Nube y APIs", commands: "BigQuery · APIs · bots", emoji: "🌩️" },
 };
 
 // El nivel de cada sector define cómo respondés: de Pasante elegís entre
