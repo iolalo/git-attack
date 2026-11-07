@@ -9,6 +9,12 @@ Online en **https://git-attack.vercel.app**.
 No usa Git de verdad ni backend: todo corre sobre un repositorio simulado en el navegador, y el progreso se guarda en
 `localStorage`.
 
+## Capturas
+
+| Escenarios | Un pedido | Consola libre |
+| --- | --- | --- |
+| ![Mapa de escenarios](docs/screenshots/escenarios.png) | ![Sesión de juego](docs/screenshots/sesion.png) | ![Consola libre](docs/screenshots/consola-libre.png) |
+
 ## Cómo se juega
 
 - **Selección de escenario**: siete escenarios (piso 1, Git en tu compu). Cada uno se abre al ganarle al jefe del anterior.
