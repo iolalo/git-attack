@@ -40,7 +40,7 @@ export default function MachetePage() {
           <div key={room.id} className="flex flex-col gap-5">
             {firstOfFloor && (
               <h2 className="text-[9px] uppercase" style={{ color: "var(--yellow)" }}>
-                {floorOf(index) === 1 ? "Piso 1 · Git en tu compu" : "Piso 2 · GitHub"}
+                {["", "Piso 1 · Git en tu compu", "Piso 2 · GitHub", "Piso 3 · Casos reales"][floorOf(index)]}
               </h2>
             )}
             <section className="pixel-panel p-3" style={{ opacity: open ? 1 : 0.55 }}>

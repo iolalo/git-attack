@@ -162,9 +162,42 @@ export const LESSONS: Record<string, Lesson> = {
       { before: ["git switch main"], cmd: "git pull", text: "Volvés a main y bajás la fusión. Ese es el circuito completo de trabajo en equipo." },
     ],
   },
+  medidas: {
+    setup: [],
+    slides: [
+      { text: "Piso 3: casos reales. Ya no se trata de comandos: te muestro un síntoma con su evidencia y tenés que encontrar la causa." },
+      { text: "Regla de oro de los totales: el total tiene que coincidir con la suma de las filas. Si no coincide, la medida se comporta distinto en el total." },
+      { text: "Primero la causa, después el arreglo. Tapar el error (IFERROR, ocultar, ajustar a mano) casi nunca es el arreglo." },
+    ],
+  },
+  relaciones: {
+    setup: [],
+    slides: [
+      { text: "Los filtros viajan por las relaciones, desde el lado «uno» hacia el lado «muchos». Si un filtro no llega, mirá primero la flecha." },
+      { text: "Entre dos tablas hay un solo camino activo. Si hay dos, el motor lo rechaza. La solución es una activa y el resto inactivas." },
+      { text: "Bidireccional no es magia: con claves que no son 1:1 filtra a medias y no avisa. Siempre comprobá contra el total." },
+    ],
+  },
+  fuentes: {
+    setup: [],
+    slides: [
+      { text: "Que refresque en Desktop no garantiza que refresque en el servicio: el servicio es más estricto con las fuentes y las credenciales." },
+      { text: "Cuando un formato cambia en el origen, los pasos que asumen posiciones fijas se rompen. Usá conversiones que acepten variaciones." },
+      { text: "Si el refresh se vuelve lento después de agregar un paso, sospechá que se rompió el query folding." },
+    ],
+  },
+  nube: {
+    setup: [],
+    slides: [
+      { text: "Un error es información: 404 es la ruta, 401 es la identidad, 5xx es el servidor, y una cuota agotada es plata o permisos." },
+      { text: "En la nube se cobra por lo que se lee. Elegí columnas y filtrá por la partición antes de escanear una tabla entera." },
+      { text: "Antes de poner un bot a operar de verdad, corrélo en modo de prueba y mirá qué haría." },
+    ],
+  },
 };
 
-export interface MacheteEntry {
+export interface MacheteEntry
+ {
   cmd: string;
   what: string;
 }
@@ -238,5 +271,29 @@ export const MACHETE: Record<string, MacheteEntry[]> = {
     { cmd: "gh pr list", what: "Lista los pull requests" },
     { cmd: "gh pr merge", what: "Fusiona el pull request en main" },
     { cmd: "Fabric: Confirmar / Actualizar todo", what: "Lleva cambios del workspace a Git y al revés" },
+  ],
+  medidas: [
+    { cmd: "Total ≠ suma de filas", what: "Buscá un IF/ISINSCOPE o un iterador que cambie el contexto en el total" },
+    { cmd: "DIVIDE(a, b)", what: "División segura: no da infinito si b es cero" },
+    { cmd: "MAXX(FILTER(...))", what: "Elige un valor cuando hay claves duplicadas" },
+    { cmd: "ADDCOLUMNS una sola vez", what: "Precalcular en vez de un CALCULATE por celda" },
+  ],
+  relaciones: [
+    { cmd: "Una activa, el resto inactivas", what: "Resuelve las rutas ambiguas; USERELATIONSHIP activa una a pedido" },
+    { cmd: "Flecha: uno → muchos", what: "Los filtros viajan en ese sentido" },
+    { cmd: "Verificar contra el total", what: "Un bidireccional incompleto no da error" },
+    { cmd: "Mismo tipo en las dos claves", what: "Texto «0049» y número 49 no se cruzan" },
+  ],
+  fuentes: [
+    { cmd: "DATEVALUE(texto)", what: "Convierte fechas de formato variable" },
+    { cmd: "Formula Firewall", what: "No mezcles fuentes dentro de una consulta nativa: usá un merge" },
+    { cmd: "Query folding", what: "Dejá los pasos que se traducen a SQL antes que los otros" },
+    { cmd: "Particiones / incremental", what: "Refrescá sólo lo que cambia" },
+  ],
+  nube: [
+    { cmd: "401 / 404 / 5xx", what: "Identidad, ruta y servidor: cada código apunta a un lugar" },
+    { cmd: "BigQuery Job User", what: "Rol que habilita ejecutar consultas; fijá el proyecto de facturación" },
+    { cmd: "Columnas + partición", what: "Cobran por bytes leídos: evitá SELECT *" },
+    { cmd: "dry-run", what: "Probá un bot sin ejecutar operaciones reales" },
   ],
 };

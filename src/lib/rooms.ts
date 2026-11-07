@@ -24,11 +24,13 @@ export interface RoomMeta {
   attack: string;
 }
 
-/** Los primeros escenarios son el piso 1 (Git en tu compu); el resto, el piso 2 (GitHub). */
+/** Los primeros 7 escenarios son el piso 1 (Git en tu compu), los 4 siguientes el piso 2 (GitHub) y el resto el piso 3 (casos reales). */
 export const FLOOR_1_ROOMS = 7;
+export const FLOOR_2_ROOMS = 4;
 
-export function floorOf(roomIndex: number): 1 | 2 {
-  return roomIndex < FLOOR_1_ROOMS ? 1 : 2;
+export function floorOf(roomIndex: number): 1 | 2 | 3 {
+  if (roomIndex < FLOOR_1_ROOMS) return 1;
+  return roomIndex < FLOOR_1_ROOMS + FLOOR_2_ROOMS ? 2 : 3;
 }
 
 // Piso 1: Git en tu compu. Los escenarios siguen el camino de un informe de
@@ -200,6 +202,66 @@ export const ROOMS: RoomMeta[] = [
     },
     taunt: "Yo apruebo sin leer, total es una medida nomás. ¿Qué puede pasar?",
     attack: "APROBADO SIN LEER",
+  },
+  {
+    id: "medidas",
+    name: "Medidas y contexto",
+    emoji: "🧮",
+    topic: "medidas",
+    color: "#58d854",
+    blurb: "Los números del total no coinciden con la suma de las filas. Aprendé a leer el contexto de filtro y a encontrar por qué una medida miente.",
+    owner: {
+      name: "Filter Man",
+      role: "Auditor de totales",
+      look: { crest: "visor", primary: "#00a844", secondary: "#b8f818", gem: "#fcfcfc" },
+    },
+    taunt: "El total da lo que da y listo. ¿Para qué vas a verificarlo contra las filas?",
+    attack: "TOTAL FALSO",
+  },
+  {
+    id: "relaciones",
+    name: "Relaciones del modelo",
+    emoji: "🔗",
+    topic: "relaciones",
+    color: "#b8f818",
+    blurb: "Un filtro que no llega, una ruta ambigua, una flecha al revés. Aprendé a diagnosticar relaciones antes de tocarlas.",
+    owner: {
+      name: "Relation Man",
+      role: "Ingeniero de rutas",
+      look: { crest: "horns", primary: "#6844fc", secondary: "#f878f8", gem: "#fcfcfc" },
+    },
+    taunt: "Todo bidireccional y problema resuelto. ¿Qué podría salir mal?",
+    attack: "FILTRO FANTASMA",
+  },
+  {
+    id: "fuentes",
+    name: "Orígenes de datos",
+    emoji: "🔌",
+    topic: "fuentes",
+    color: "#f8b800",
+    blurb: "Anda en Desktop y falla en el servicio. Un formato cambió de un día para otro. Aprendé a encontrar el problema en Power Query.",
+    owner: {
+      name: "Source Man",
+      role: "Guardián del refresh",
+      look: { crest: "spike", primary: "#d82800", secondary: "#fca044", gem: "#fce4a0" },
+    },
+    taunt: "Si refresca en mi compu, refresca en todos lados. ¿No?",
+    attack: "REFRESH ROTO",
+  },
+  {
+    id: "nube",
+    name: "Nube y APIs",
+    emoji: "🌩️",
+    topic: "nube",
+    color: "#38b8f8",
+    blurb: "Cuotas agotadas, endpoints que devuelven 404, bots que no hacen lo que deberían. Aprendé a leer el error antes de reintentar.",
+    owner: {
+      name: "Quota Man",
+      role: "Cobrador de la nube",
+      look: { crest: "ears", primary: "#0058f8", secondary: "#38b8f8", gem: "#fcfcfc" },
+    },
+    taunt: "Reintentá hasta que ande. Total, cada consulta es gratis. ¿O no?",
+    attack: "CUOTA AGOTADA",
   },
 ];
 

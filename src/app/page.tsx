@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import HeroSelect from "@/components/HeroSelect";
 import PixelSprite from "@/components/PixelSprite";
 import SoundToggle, { useMusic } from "@/components/SoundToggle";
-import StageSelect, { FIRST_FLOOR_2_ROOM, FLOOR_CELLS, Floor, STAGE_COLUMNS, cellOfRoom } from "@/components/StageSelect";
+import StageSelect, { FLOOR_CELLS, Floor, STAGE_COLUMNS, cellOfRoom, firstRoomAbove } from "@/components/StageSelect";
 import { playSfx } from "@/lib/audio";
 import { ROOMS, floorOf } from "@/lib/rooms";
 import {
@@ -81,6 +81,18 @@ function PanelHeader({ look, title, lines }: { look?: PersonLook; title: string;
   );
 }
 
+const FLOOR_TITLES: Record<Floor, string> = { 1: "Piso 1 · Git en tu compu", 2: "Piso 2 · GitHub", 3: "Piso 3 · Casos reales" };
+const FLOOR_COMMANDS: Record<Floor, string> = {
+  1: "init · commit · ramas · merge",
+  2: "clone · push · pull · pull requests",
+  3: "DAX · relaciones · Power Query · BigQuery",
+};
+const FLOOR_BLURBS: Record<Floor, string> = {
+  1: "Todo lo que hacés con Git sin conexión: guardar cambios, leer el historial, deshacer, ramas y merges.",
+  2: "El mismo informe, ahora compartido con el equipo: repositorio remoto, subir y bajar cambios, y pull requests.",
+  3: "Ya no son comandos: son los problemas de verdad. Te muestran un síntoma y tenés que encontrar la causa y el arreglo.",
+};
+
 function Office({ hydrated }: { hydrated: boolean }) {
   const router = useRouter();
   const progress = useProgress();
@@ -103,7 +115,7 @@ function Office({ hydrated }: { hydrated: boolean }) {
   const isLocked = (index: number) => isRoomLocked(progress, index);
   const locked = typeof cell === "number" && isLocked(cell);
   const previousRoom = typeof cell === "number" ? ROOMS[cell - 1] : undefined;
-  const floor2Locked = isLocked(FIRST_FLOOR_2_ROOM);
+  const upLocked = isLocked(firstRoomAbove(place.floor));
   const pendingReview = reviewQueue(progress).length;
 
   useEffect(() => {
@@ -124,15 +136,15 @@ function Office({ hydrated }: { hydrated: boolean }) {
 
   function goToFloor(floor: Floor) {
     playSfx("enter");
-    setPlace({ floor, cursor: FLOOR_CELLS[floor].indexOf(floor === 2 ? "down" : "up") });
+    setPlace({ floor, cursor: FLOOR_CELLS[floor].indexOf(floor > place.floor ? "down" : "up") });
   }
 
   /** Confirmar la casilla del cursor: entrar al escenario, cambiar de piso o de personaje. */
   function confirm() {
     if (entering) return;
     if (cell === "hero") return setChangingHero(true);
-    if (cell === "down") return goToFloor(1);
-    if (cell === "up") return floor2Locked ? undefined : goToFloor(2);
+    if (cell === "down") return goToFloor((place.floor - 1) as Floor);
+    if (cell === "up") return upLocked ? undefined : goToFloor((place.floor + 1) as Floor);
     if (!room || locked) return;
     playSfx("enter");
     setEntering(true);
@@ -220,7 +232,7 @@ function Office({ hydrated }: { hydrated: boolean }) {
       </div>
 
       <p className="text-center text-[8px] uppercase pb-2" style={{ color: "var(--yellow)" }}>
-        {place.floor === 1 ? "Piso 1 · Git en tu compu" : "Piso 2 · GitHub"}
+        {FLOOR_TITLES[place.floor]}
       </p>
 
       <StageSelect
@@ -271,20 +283,20 @@ function Office({ hydrated }: { hydrated: boolean }) {
           </>
         ) : cell === "up" ? (
           <>
-            <PanelHeader title="Piso 2 · GitHub" lines={["clone · push · pull · pull requests"]} />
+            <PanelHeader title={FLOOR_TITLES[(place.floor + 1) as Floor]} lines={[FLOOR_COMMANDS[(place.floor + 1) as Floor]]} />
             {note(
-              floor2Locked
-                ? `Sin acceso. Terminá el piso 1: ganale a ${ROOMS[FIRST_FLOOR_2_ROOM - 1].owner.name} para que se abra el ascensor.`
-                : "El mismo informe, ahora compartido con el equipo: repositorio remoto, subir y bajar cambios, y pull requests."
+              upLocked
+                ? `Sin acceso. Terminá el piso ${place.floor}: ganale a ${ROOMS[firstRoomAbove(place.floor) - 1].owner.name} para que se abra el ascensor.`
+                : FLOOR_BLURBS[(place.floor + 1) as Floor]
             )}
-            <button className="pixel-btn pixel-btn-primary w-full py-4 text-xs mt-2" onClick={confirm} disabled={floor2Locked}>
-              {floor2Locked ? "Cerrado" : "▲ Subir"}
+            <button className="pixel-btn pixel-btn-primary w-full py-4 text-xs mt-2" onClick={confirm} disabled={upLocked}>
+              {upLocked ? "Cerrado" : "▲ Subir"}
             </button>
           </>
         ) : (
           <>
-            <PanelHeader title="Piso 1 · Git en tu compu" lines={["init · commit · ramas · merge"]} />
-            {note("Todo lo que hacés con Git sin conexión: guardar cambios, leer el historial, deshacer, ramas y merges.")}
+            <PanelHeader title={FLOOR_TITLES[(place.floor - 1) as Floor]} lines={[FLOOR_COMMANDS[(place.floor - 1) as Floor]]} />
+            {note(FLOOR_BLURBS[(place.floor - 1) as Floor])}
             <button className="pixel-btn pixel-btn-primary w-full py-4 text-xs mt-2" onClick={confirm}>
               ▼ Bajar
             </button>

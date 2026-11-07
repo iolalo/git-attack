@@ -19,6 +19,7 @@ import {
   status,
   visibleCommits,
 } from "./git/sim";
+import { CASE_TEMPLATES } from "./cases";
 import { TopicKey } from "./types";
 
 export interface GoalContext {
@@ -61,7 +62,7 @@ interface CommandDef {
   hint: string;
 }
 
-interface Template {
+export interface Template {
   id: string;
   topic: TopicKey;
   /** Desde qué nivel del sector aparece: 0 Pasante, 1 Junior, 2 Senior. */
@@ -176,6 +177,7 @@ const remoteTip = (repo: Repo, branch: string) => repo.remote?.branches[branch];
 // ---------------------------------------------------------------- desafíos
 
 const TEMPLATES: Template[] = [
+  ...CASE_TEMPLATES,
   // ===== Workspace nuevo: primeros pasos =====
   {
     id: "i-repo",
