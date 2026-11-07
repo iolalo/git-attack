@@ -4,6 +4,8 @@ Juego 8-bit para aprender Git desde cero trabajando con Power BI, hermano de Num
 informe está guardado como proyecto (`.pbip`): en cada escenario hay cinco pedidos y un jefe robot, y cada jefe enseña
 un tema. La estética sigue a los Mega Man de NES.
 
+Online en **https://git-attack.vercel.app**.
+
 No usa Git de verdad ni backend: todo corre sobre un repositorio simulado en el navegador, y el progreso se guarda en
 `localStorage`.
 
@@ -75,3 +77,17 @@ npm run build
 Sumá una entrada a `TEMPLATES` en `src/lib/challenges.ts` con su tema, el nivel desde el que aparece (`tier`) y, si es
 de comando, el escenario (`setup`), la respuesta modelo, tres opciones incorrectas, la meta y una pista. Después corré
 `npm run check`.
+
+## Deploy
+
+El sitio está en Vercel y el deploy es manual, con la CLI (el proyecto ya está vinculado en `.vercel/`):
+
+```bash
+npm run check && npm run lint && npm run build   # que todo pase antes de subir
+vercel --prod
+```
+
+## Flujo de ramas
+
+El trabajo se hace en `dev`; `master` se actualiza solo cuando lo de `dev` está terminado y verificado. Un workflow de
+GitHub Actions (`.github/workflows/ci.yml`) corre `check`, `lint` y `build` en cada push y pull request.
