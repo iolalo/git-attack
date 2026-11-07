@@ -1,4 +1,4 @@
-// Dibuja el ícono de la app (un grafo de commits en pixel art) y lo guarda
+// Dibuja el ícono de la app (un control de consola en pixel art) y lo guarda
 // en todos los tamaños que hacen falta. Sin dependencias: arma el PNG a mano.
 // Uso: node scripts/make-icons.mjs
 
@@ -7,32 +7,31 @@ import { deflateSync } from "node:zlib";
 
 const PALETTE = {
   ".": [0, 0, 0],
-  B: [0, 112, 236],
-  C: [56, 184, 248],
-  W: [252, 252, 252],
-  Y: [252, 228, 160],
+  S: [188, 188, 188],
+  K: [0, 0, 0],
   P: [248, 88, 152],
+  R: [216, 40, 0],
 };
 
-// Grafo de commits: main baja por la izquierda con dos commits (nodos blancos)
-// y una rama rosa se abre hacia un tercer commit, arriba a la derecha.
-const GRID = 16;
-const cells = Array.from({ length: GRID }, (_, y) =>
-  Array.from({ length: GRID }, (_, x) => (x === 0 || y === 0 || x === GRID - 1 || y === GRID - 1 ? "B" : "."))
-);
-const put = (y, x, c) => {
-  cells[y][x] = c;
-};
-const node = (y, x, ring, center) => {
-  for (let dy = 0; dy < 3; dy++) for (let dx = 0; dx < 3; dx++) put(y + dy, x + dx, ring);
-  put(y + 1, x + 1, center);
-};
-for (let y = 5; y <= 10; y++) put(y, 4, "C"); // main
-node(2, 3, "W", "C"); // commit de arriba
-node(11, 3, "W", "C"); // commit de abajo
-for (const [y, x] of [[10, 5], [9, 6], [8, 7], [7, 8], [6, 9], [5, 10]]) put(y, x, "P"); // rama
-node(2, 10, "Y", "P"); // commit de la rama
-const ART = cells.map((row) => row.join(""));
+// Un control de consola de 8 bits (gris, con cruceta y dos botones) sobre fondo negro.
+const ART = [
+  "................",
+  "................",
+  "................",
+  "................",
+  "..SSSSSSSSSSSS..",
+  ".SSSSSSSSSSSSSS.",
+  ".SSSKSSSSSSSSSS.",
+  ".SSKKKSSSSSPSRS.",
+  ".SSSKSSSSSSSSSS.",
+  "..SSSSSSSSSSSS..",
+  "..SSSS....SSSS..",
+  "................",
+  "................",
+  "................",
+  "................",
+  "................",
+];
 
 const CRC_TABLE = Array.from({ length: 256 }, (_, n) => {
   let c = n;
