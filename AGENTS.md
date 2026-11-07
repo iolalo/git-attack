@@ -17,4 +17,4 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Después de tocar un desafío o el simulador: `npm run check`. Antes de integrar: `npm run lint` y `npm run build`.
 - Deploy manual con la CLI de Vercel (`vercel --prod`); no hay integración automática con GitHub.
 - Ramas: se trabaja en `dev` y se integra a `master` recién cuando está terminado.
-- Piso 3 (casos reales): contenido en `src/lib/cases.ts`. Debe ser siempre genérico: nada de nombres de empresas, clientes, tablas ni datos del trabajo real de Alejandro, porque el repo y el sitio son públicos.
+- Piso 3 (casos reales): contenido en `src/lib/cases.ts`. Debe ser siempre genérico: nada de nombres de empresas, clientes, tablas ni datos de un trabajo real, porque el repo y el sitio son públicos.
