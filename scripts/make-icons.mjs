@@ -1,4 +1,4 @@
-// Dibuja el ícono de la app (un grafo de commits en pixel art) y lo guarda
+// Dibuja el ícono de la app (un control de consola en pixel art) y lo guarda
 // en todos los tamaños que hacen falta. Sin dependencias: arma el PNG a mano.
 // Uso: node scripts/make-icons.mjs
 
@@ -7,31 +7,30 @@ import { deflateSync } from "node:zlib";
 
 const PALETTE = {
   ".": [0, 0, 0],
-  B: [0, 112, 236],
-  C: [56, 184, 248],
-  W: [252, 252, 252],
-  Y: [252, 228, 160],
+  S: [188, 188, 188],
+  K: [0, 0, 0],
   P: [248, 88, 152],
+  R: [216, 40, 0],
 };
 
-// main baja por la izquierda; una rama se abre hacia la derecha.
+// Un control de consola de 8 bits (gris, con cruceta y dos botones) sobre fondo negro.
 const ART = [
-  "BBBBBBBBBBBBBBBB",
-  "B..............B",
-  "B...WW.........B",
-  "B...WW.........B",
-  "B...CC.....YY..B",
-  "B...CC.....YY..B",
-  "B...CC.....PP..B",
-  "B...WW.....PP..B",
-  "B...WW....PP...B",
-  "B...CC...PP....B",
-  "B...CC..PP.....B",
-  "B...CCPPP......B",
-  "B...WW.........B",
-  "B...WW.........B",
-  "B..............B",
-  "BBBBBBBBBBBBBBBB",
+  "................",
+  "................",
+  "................",
+  "................",
+  "..SSSSSSSSSSSS..",
+  ".SSSSSSSSSSSSSS.",
+  ".SSSKSSSSSSSSSS.",
+  ".SSKKKSSSSSPSRS.",
+  ".SSSKSSSSSSSSSS.",
+  "..SSSSSSSSSSSS..",
+  "..SSSS....SSSS..",
+  "................",
+  "................",
+  "................",
+  "................",
+  "................",
 ];
 
 const CRC_TABLE = Array.from({ length: 256 }, (_, n) => {
