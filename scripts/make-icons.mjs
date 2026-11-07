@@ -14,25 +14,25 @@ const PALETTE = {
   P: [248, 88, 152],
 };
 
-// main baja por la izquierda; una rama se abre hacia la derecha.
-const ART = [
-  "BBBBBBBBBBBBBBBB",
-  "B..............B",
-  "B...WW.........B",
-  "B...WW.........B",
-  "B...CC.....YY..B",
-  "B...CC.....YY..B",
-  "B...CC.....PP..B",
-  "B...WW.....PP..B",
-  "B...WW....PP...B",
-  "B...CC...PP....B",
-  "B...CC..PP.....B",
-  "B...CCPPP......B",
-  "B...WW.........B",
-  "B...WW.........B",
-  "B..............B",
-  "BBBBBBBBBBBBBBBB",
-];
+// Grafo de commits: main baja por la izquierda con dos commits (nodos blancos)
+// y una rama rosa se abre hacia un tercer commit, arriba a la derecha.
+const GRID = 16;
+const cells = Array.from({ length: GRID }, (_, y) =>
+  Array.from({ length: GRID }, (_, x) => (x === 0 || y === 0 || x === GRID - 1 || y === GRID - 1 ? "B" : "."))
+);
+const put = (y, x, c) => {
+  cells[y][x] = c;
+};
+const node = (y, x, ring, center) => {
+  for (let dy = 0; dy < 3; dy++) for (let dx = 0; dx < 3; dx++) put(y + dy, x + dx, ring);
+  put(y + 1, x + 1, center);
+};
+for (let y = 5; y <= 10; y++) put(y, 4, "C"); // main
+node(2, 3, "W", "C"); // commit de arriba
+node(11, 3, "W", "C"); // commit de abajo
+for (const [y, x] of [[10, 5], [9, 6], [8, 7], [7, 8], [6, 9], [5, 10]]) put(y, x, "P"); // rama
+node(2, 10, "Y", "P"); // commit de la rama
+const ART = cells.map((row) => row.join(""));
 
 const CRC_TABLE = Array.from({ length: 256 }, (_, n) => {
   let c = n;
